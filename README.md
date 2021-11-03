@@ -1,2 +1,2 @@
-# CPU_Scheduling-
+# CPU_Scheduling Algorithm
 OS_project
