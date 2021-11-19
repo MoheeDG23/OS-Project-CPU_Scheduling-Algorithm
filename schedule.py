@@ -73,7 +73,6 @@ def round_robin(time):
         current_time = 0
         temp_process = 0
         flag = 0
-        count = 0
         total_wait = 0
         total_end = 0
         process_list = [0 for i in range(time)]
@@ -84,9 +83,12 @@ def round_robin(time):
         temp_process = num_of_process 
             
         print("\nProcess ID\t\tBurst Time\t Wait Time\t Completion Time\n")
-                
-        while(temp_process):
+
+        # print("\n``````````````````   ",time,"  ```````````````````````\n")
+
+        while(temp_process!=0):
                 process_cycle[count] = current_time
+                # print("\n``````````````````count:   ",count,"  ```````````````````````\n")       
                 count+=1
                 if(remain_time[i] <= time_quantum and remain_time[i] > 0):	
                         current_time += remain_time[i]
@@ -101,7 +103,7 @@ def round_robin(time):
                 if(remain_time[i] == 0 and flag == 1):
                         temp_process-=1 
                         completion_time[i] = current_time - arrival_time[i]
-                        print("\nProcess[%d]\t\t%d\t\t %d\t\t\t %d", i + 1, burst_time[i], current_time - arrival_time[i] - burst_time[i], current_time - arrival_time[i])
+                        print("\nProcess[", i + 1,"]\t\t",burst_time[i],"\t\t",current_time - arrival_time[i] - burst_time[i],"\t\t\t", current_time - arrival_time[i])
                         total_wait = total_wait + current_time - arrival_time[i] - burst_time[i] 
                         total_end = total_end + current_time - arrival_time[i]
                         flag = 0
@@ -115,13 +117,13 @@ def round_robin(time):
 
         avg_wait = float(total_wait) / num_of_process
         avg_end = float(total_end) / num_of_process
-        print("\n\nAverage Waiting Time:\t%f", avg_wait) 
-        print("\nAverage Completion Time:\t%f\n", avg_end)
+        print("\n\nAverage Waiting Time:\t", avg_wait) 
+        print("\nAverage Completion Time:\t", avg_end)
 
         # calculating process list
         proc = 0
         update_process_cycle=[0 for i in range(time)]
-
+        i=0
         count=0
         for i in range(time):
                 if (i == time - 1): update_process_cycle[count] = process_cycle[i]
