@@ -27,7 +27,7 @@ def get_process_info(selected_algo):
         quit()
 
     if (selected_algo == 2):
-        time_quantum = int(input(" Enter time quantum: "))
+        time_quantum = int(input("Enter time quantum: "))
         if (time_quantum < 1):
             print("Invalid Input: Time quantum should be greater than 0 \n")
             quit()
@@ -52,16 +52,16 @@ def print_schedule(process_list, cycles):
 	print("Scheduling:- \n\n")
 	print("Time: ")
 	for i in range(cycles):
-		if (i < 10): print("| 0", i, " ")
-		else: print("| ", i, " ")
+		if (i < 10): print("| 0",i, " ", end = '')
+		else: print("| ", i, " ", end = '')
 
 	print("|\n")
 
 	for i in range(num_of_process):
-		print | ("P[", i+1, "]: ")
+		print("P[", i+1, "]: ", end = '')
 		for j in range(cycles):
-			if (process_list[j] == i+1): print("|####")
-			else: print("|    ")
+			if (process_list[j] == i+1): print("|####", end = '')
+			else: print("|    ", end = '')
 		print("|\n")
 
 def round_robin(time):
@@ -69,6 +69,7 @@ def round_robin(time):
         global MAX_PROCESS, num_of_process, count, remain, time_quantum, execution_time, period
         global remain_time, deadline, remain_deadline, burst_time, wait_time, completion_time, arrival_time
 
+        count = 0
         i = 0
         current_time = 0
         temp_process = 0
@@ -76,7 +77,7 @@ def round_robin(time):
         total_wait = 0
         total_end = 0
         process_list = [0 for i in range(time)]
-        process_cycle = [-1 for i in range(time)]
+        process_cycle = [-1 for i in range(time+1)]
         avg_wait=float(0)
         avg_end=float(0)
 
@@ -84,18 +85,17 @@ def round_robin(time):
             
         print("\nProcess ID\t\tBurst Time\t Wait Time\t Completion Time\n")
 
-        # print("\n``````````````````   ",time,"  ```````````````````````\n")
+        print("\nTime: ",time,"\nCurrent_Time: ",current_time,"\nTemp_Process: ",temp_process,"\nCount: ",count)
 
         while(temp_process!=0):
                 process_cycle[count] = current_time
-                # print("\n``````````````````count:   ",count,"  ```````````````````````\n")       
                 count+=1
-                if(remain_time[i] <= time_quantum and remain_time[i] > 0):	
+                if(remain_time[i] <= time_quantum and remain_time[i] > 0 and arrival_time[i] <= current_time):	
                         current_time += remain_time[i]
                         remain_time[i] = 0
                         flag = 1
 
-                elif (remain_time[i] > 0): 
+                elif (remain_time[i] > 0 and arrival_time[i] <= current_time): 
                         remain_time[i] -= time_quantum 
                         current_time += time_quantum
 
@@ -107,12 +107,14 @@ def round_robin(time):
                         total_wait = total_wait + current_time - arrival_time[i] - burst_time[i] 
                         total_end = total_end + current_time - arrival_time[i]
                         flag = 0
+                print("\ncount: ",count," - current_time: ",current_time," - remain_time[i]: ",remain_time[i])
 
                 if (i == num_of_process - 1): i = 0
 
                 elif (arrival_time[i + 1] <= current_time): i+=1
 
                 else: i = 0
+
 
 
         avg_wait = float(total_wait) / num_of_process
@@ -122,7 +124,7 @@ def round_robin(time):
 
         # calculating process list
         proc = 0
-        update_process_cycle=[0 for i in range(time)]
+        update_process_cycle=[0 for i in range(time+1)]
         i=0
         count=0
         for i in range(time):
