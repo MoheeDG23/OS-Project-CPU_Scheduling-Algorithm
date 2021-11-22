@@ -20,10 +20,13 @@ void reorder(vector<int> &a, vector<int> &b){
 	}
 }
 
-void round_robin(vector<int> &arrival_time, vector<int> &burst_time,vector<int> &completion_time, int time_quant)
+void optimised_round_robin(vector<int> &arrival_time, vector<int> &burst_time,vector<int> &completion_time)
 {
     int idx, c, r=0, f=0, rq[100][2];
     int num_proc=arrival_time.size();
+
+    int time_quant=0;
+    for(auto i:burst_time) time_quant+=i;
 
     if(burst_time[0]>time_quant){
 		c=arrival_time[0]+time_quant;
@@ -146,15 +149,7 @@ int main()
     vector<int> burst_copy(num_proc);
     vector<int> completion_time(num_proc);
 
-    int time_quant; 
-
-    cout<<"Enter time quantum: ";cin>>time_quant;cout<<endl;
-    if(time_quant<1) 
-    {
-        cout<<"time quantum should be a positive integer"<<endl;
-        return 0;
-    }
-
+    
     for(int i=0; i<num_proc; i++)
     {
         cout<<"For Process "<<i+1<<":"<<endl<<endl;
@@ -168,7 +163,7 @@ int main()
 
     burst_copy=burst_time;
 
-    round_robin(arrival_time, burst_time, completion_time, time_quant);
+    optimised_round_robin(arrival_time, burst_time, completion_time);
     pair<double, double> results = calculate(arrival_time, burst_copy, completion_time);
 
     double avg_tat, avg_wait;
